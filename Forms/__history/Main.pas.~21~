@@ -1,0 +1,97 @@
+unit Main;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, ConfiguracoesDoBanco,
+  CadastroDeClientes, Vcl.Buttons, Vcl.ExtCtrls, CadastroDeCidades,
+  Vcl.Imaging.pngimage;
+
+type
+  TMainForm = class(TForm)
+    Panel1: TPanel;
+    MenuSpeedButton: TSpeedButton;
+    CadastrarClientesSpeedButton: TSpeedButton;
+    CadastrarCidadesSpeedButton: TSpeedButton;
+    ConfigBancoSpeedButton: TSpeedButton;
+    SairSpeedButton: TSpeedButton;
+    procedure MenuSpeedButtonClick(Sender: TObject);
+    procedure SairSpeedButtonClick(Sender: TObject);
+    procedure CadastrarClientesSpeedButtonClick(Sender: TObject);
+    procedure CadastrarCidadesSpeedButtonClick(Sender: TObject);
+    procedure ConfigBancoSpeedButtonClick(Sender: TObject);
+  private
+    { Private declarations }
+    procedure AbreMenu;
+  public
+    { Public declarations }
+  end;
+
+var
+  MainForm: TMainForm;
+  ExpandeMenu: Boolean = False;
+
+implementation
+
+{$R *.dfm}
+
+
+procedure TMainForm.CadastrarCidadesSpeedButtonClick(Sender: TObject);
+begin
+  with TCadastroDeCidadesForm.create(self) do
+  try
+    ShowModal;
+  finally
+    free;
+  end;
+end;
+
+procedure TMainForm.CadastrarClientesSpeedButtonClick(Sender: TObject);
+begin
+  with TCadastroDeClientesForm.create(self) do
+    try
+      Show;
+    finally
+      free;
+    end;
+end;
+
+procedure TMainForm.ConfigBancoSpeedButtonClick(Sender: TObject);
+begin
+  with TConfiguracoesDoBancoForm.create(self) do
+    try
+      ShowModal;
+    finally
+      free;
+    end;
+end;
+
+procedure TMainForm.AbreMenu;
+begin
+  if ExpandeMenu = false then
+   begin
+    Panel1.Width:= 287;
+    ExpandeMenu:= not Expandemenu;
+   end
+   else
+   begin
+    Panel1.Width:= 49;
+    ExpandeMenu:= not Expandemenu;
+   end;
+end;
+
+procedure TMainForm.SairSpeedButtonClick(Sender: TObject);
+begin
+  if messagedlg('Realmente deseja sair?',mtconfirmation,[mbyes,mbno],0)= mryes then
+    close
+  else
+    exit;
+end;
+
+procedure TMainForm.MenuSpeedButtonClick(Sender: TObject);
+begin
+  AbreMenu;
+end;
+
+end.
