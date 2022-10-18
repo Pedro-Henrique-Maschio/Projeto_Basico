@@ -1,0 +1,55 @@
+unit CadastroDeCidades;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, DataModule, FireDAC.Stan.Intf,
+  FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
+  FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
+  Vcl.DBCtrls, Data.DB, Vcl.StdCtrls, Vcl.Mask, FireDAC.Comp.DataSet,
+  FireDAC.Comp.Client, Vcl.ExtCtrls, Vcl.Grids, Vcl.DBGrids;
+
+type
+  TCadastroDeCidadesForm = class(TForm)
+    Panel1: TPanel;
+    Label1: TLabel;
+    CidadesQuery: TFDQuery;
+    CidadesQueryCIDADE_ID: TIntegerField;
+    CidadesQueryNOME: TStringField;
+    CidadesDataSource: TDataSource;
+    DBNavigator1: TDBNavigator;
+    DBGrid1: TDBGrid;
+    CidadesQuerySIGLA: TStringField;
+    procedure CidadesQueryAfterPost(DataSet: TDataSet);
+    procedure CidadesQueryAfterDelete(DataSet: TDataSet);
+    procedure CidadesQueryAfterCancel(DataSet: TDataSet);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  CadastroDeCidadesForm: TCadastroDeCidadesForm;
+
+implementation
+
+{$R *.dfm}
+
+procedure TCadastroDeCidadesForm.CidadesQueryAfterCancel(DataSet: TDataSet);
+begin
+  CidadesQuery.refresh;
+end;
+
+procedure TCadastroDeCidadesForm.CidadesQueryAfterDelete(DataSet: TDataSet);
+begin
+  CidadesQuery.refresh;
+end;
+
+procedure TCadastroDeCidadesForm.CidadesQueryAfterPost(DataSet: TDataSet);
+begin
+  CidadesQuery.refresh;
+end;
+
+end.

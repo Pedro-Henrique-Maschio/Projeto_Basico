@@ -1,0 +1,218 @@
+object CadastroDeCidadesForm: TCadastroDeCidadesForm
+  Left = 0
+  Top = 0
+  Caption = 'CadastroDeCidadesForm'
+  ClientHeight = 360
+  ClientWidth = 772
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poScreenCenter
+  OnClose = FormClose
+  OnCreate = FormCreate
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Label2: TLabel
+    Left = 8
+    Top = 75
+    Width = 27
+    Height = 13
+    Caption = 'C'#243'd.:'
+    FocusControl = DBEdit1
+  end
+  object Label3: TLabel
+    Left = 71
+    Top = 75
+    Width = 31
+    Height = 13
+    Caption = 'Nome:'
+    FocusControl = DBEdit2
+  end
+  object Label4: TLabel
+    Left = 659
+    Top = 75
+    Width = 37
+    Height = 13
+    Caption = 'Estado:'
+  end
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 772
+    Height = 69
+    Align = alTop
+    Color = 5059078
+    ParentBackground = False
+    TabOrder = 0
+    object Label1: TLabel
+      Left = 8
+      Top = 20
+      Width = 228
+      Height = 24
+      Caption = 'Cadastro de Cidades'
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWhite
+      Font.Height = -21
+      Font.Name = 'Consolas'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object ExcluirButton: TButton
+      Left = 682
+      Top = 23
+      Width = 75
+      Height = 25
+      Caption = 'Excluir'
+      TabOrder = 0
+      OnClick = ExcluirButtonClick
+    end
+    object NovoButton: TButton
+      Left = 439
+      Top = 23
+      Width = 75
+      Height = 25
+      Caption = 'Novo'
+      TabOrder = 1
+      OnClick = NovoButtonClick
+    end
+    object ConfirmarButton: TButton
+      Left = 520
+      Top = 23
+      Width = 75
+      Height = 25
+      Caption = 'Confirmar'
+      Enabled = False
+      TabOrder = 2
+      OnClick = ConfirmarButtonClick
+    end
+    object CancelarButton: TButton
+      Left = 601
+      Top = 23
+      Width = 75
+      Height = 25
+      Caption = 'Cancelar'
+      Enabled = False
+      TabOrder = 3
+      OnClick = CancelarButtonClick
+    end
+  end
+  object DBEdit1: TDBEdit
+    Left = 8
+    Top = 90
+    Width = 57
+    Height = 21
+    DataField = 'CIDADE_ID'
+    DataSource = CidadesDataSource
+    TabOrder = 1
+  end
+  object DBEdit2: TDBEdit
+    Left = 71
+    Top = 91
+    Width = 582
+    Height = 21
+    DataField = 'NOME'
+    DataSource = CidadesDataSource
+    TabOrder = 2
+  end
+  object DBLookupComboBox1: TDBLookupComboBox
+    Left = 659
+    Top = 90
+    Width = 98
+    Height = 21
+    DataField = 'SIGLA'
+    DataSource = CidadesDataSource
+    KeyField = 'SIGLA'
+    ListField = 'NOME'
+    ListSource = EstadosDataSource
+    TabOrder = 3
+  end
+  object DBGrid1: TDBGrid
+    Left = 8
+    Top = 118
+    Width = 749
+    Height = 225
+    DataSource = CidadesDataSource
+    TabOrder = 4
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -11
+    TitleFont.Name = 'Tahoma'
+    TitleFont.Style = []
+    Columns = <
+      item
+        Alignment = taCenter
+        Expanded = False
+        FieldName = 'CIDADE_ID'
+        Title.Alignment = taCenter
+        Title.Caption = '#'
+        Width = 33
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'NOME'
+        Title.Caption = 'Nome'
+        Visible = True
+      end
+      item
+        Alignment = taCenter
+        Expanded = False
+        FieldName = 'SIGLA'
+        Title.Caption = 'Estado'
+        Visible = True
+      end>
+  end
+  object CidadesQuery: TFDQuery
+    AfterEdit = CidadesQueryAfterEdit
+    AfterPost = CidadesQueryAfterPost
+    AfterCancel = CidadesQueryAfterCancel
+    AfterDelete = CidadesQueryAfterDelete
+    Connection = DataModuleForm.Conexao
+    UpdateOptions.AssignedValues = [uvGeneratorName]
+    UpdateOptions.GeneratorName = 'GEN_CIDADES_ID'
+    UpdateOptions.AutoIncFields = 'CIDADE_ID'
+    SQL.Strings = (
+      'select * from cidades')
+    Left = 264
+    Top = 208
+    object CidadesQueryCIDADE_ID: TIntegerField
+      AutoGenerateValue = arAutoInc
+      FieldName = 'CIDADE_ID'
+      Origin = 'CIDADE_ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+    end
+    object CidadesQueryNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      Size = 60
+    end
+    object CidadesQuerySIGLA: TStringField
+      FieldName = 'SIGLA'
+      Origin = 'SIGLA'
+      Size = 2
+    end
+  end
+  object CidadesDataSource: TDataSource
+    DataSet = CidadesQuery
+    Left = 272
+    Top = 248
+  end
+  object EstadosQuery: TFDQuery
+    Connection = DataModuleForm.Conexao
+    SQL.Strings = (
+      'select * '
+      'from estados'
+      'order by estado_id')
+    Left = 384
+    Top = 208
+  end
+  object EstadosDataSource: TDataSource
+    DataSet = EstadosQuery
+    Left = 424
+    Top = 272
+  end
+end

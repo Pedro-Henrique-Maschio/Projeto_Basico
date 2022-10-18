@@ -1,0 +1,161 @@
+unit CadastroDeClientes;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, DataModule,
+  FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
+  FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
+  FireDAC.Stan.Async, FireDAC.DApt, Vcl.Mask, Vcl.DBCtrls, Data.DB,
+  FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.Grids, Vcl.DBGrids;
+
+type
+  TCadastroDeClientesForm = class(TForm)
+    ClientesQuery: TFDQuery;
+    ClienteDataSource: TDataSource;
+    Panel1: TPanel;
+    Label1: TLabel;
+    ExcluirButton: TButton;
+    CadastrarButton: TButton;
+    CancelarButton: TButton;
+    NovoButton: TButton;
+    Label3: TLabel;
+    DBEdit2: TDBEdit;
+    Label4: TLabel;
+    DBEdit3: TDBEdit;
+    Label5: TLabel;
+    DBEdit4: TDBEdit;
+    Label6: TLabel;
+    DBEdit5: TDBEdit;
+    Label7: TLabel;
+    DBEdit6: TDBEdit;
+    Label8: TLabel;
+    DBEdit7: TDBEdit;
+    Label2: TLabel;
+    DBEdit1: TDBEdit;
+    Label9: TLabel;
+    CidadesQuery: TFDQuery;
+    CidadesDataSource: TDataSource;
+    ClientesQueryCLIENTE_ID: TFDAutoIncField;
+    ClientesQueryNOME: TStringField;
+    ClientesQueryAPELIDO: TStringField;
+    ClientesQueryCPF: TStringField;
+    ClientesQueryTELEFONE: TStringField;
+    ClientesQueryENDERECO: TStringField;
+    ClientesQueryNUMERO: TStringField;
+    ClientesQueryCIDADES_ID: TIntegerField;
+    ClientesQueryESTADOS_ID: TIntegerField;
+    DBGrid1: TDBGrid;
+    CidadesQueryCIDADE_ID: TIntegerField;
+    CidadesQueryNOME: TStringField;
+    CidadesQuerySIGLA: TStringField;
+    DBLookupComboBox1: TDBLookupComboBox;
+    ClientesQueryCIDADE: TStringField;
+    procedure NovoButtonClick(Sender: TObject);
+    procedure CadastrarButtonClick(Sender: TObject);
+    procedure CancelarButtonClick(Sender: TObject);
+    procedure ExcluirButtonClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormCreate(Sender: TObject);
+    procedure ClientesQueryAfterPost(DataSet: TDataSet);
+    procedure ClientesQueryAfterCancel(DataSet: TDataSet);
+    procedure ClientesQueryAfterEdit(DataSet: TDataSet);
+    procedure ClientesQueryBeforePost(DataSet: TDataSet);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  CadastroDeClientesForm: TCadastroDeClientesForm;
+
+implementation
+
+{$R *.dfm}
+
+procedure TCadastroDeClientesForm.NovoButtonClick(Sender: TObject);
+begin
+  if not (clientesquery.State in [dsedit, dsinsert]) then
+  begin
+    ClientesQuery.Insert;
+    ExcluirButton.Enabled := false;
+    NovoButton.Enabled := False;
+    cadastrarbutton.enabled:= true;
+    CancelarButton.Enabled:= true;
+  end;
+
+end;
+
+procedure TCadastroDeClientesForm.CadastrarButtonClick(Sender: TObject);
+begin
+  if ClientesQuery.state in [DSEdit,DSInsert] then
+    ClientesQuery.Post;
+    DataModuleForm.Conexao.Commit;
+    ClientesQuery.Refresh;
+end;
+
+procedure TCadastroDeClientesForm.CancelarButtonClick(Sender: TObject);
+begin
+  if ClientesQuery.state in [DSEdit,DSInsert] then
+    ClientesQuery.Cancel;
+
+    DataModuleForm.Conexao.RollbackRetaining;
+    ClientesQuery.Refresh;
+    CadastrarButton.Enabled:= False;
+    CancelarButton.Enabled:= False;
+
+end;
+
+procedure TCadastroDeClientesForm.ClientesQueryAfterCancel(DataSet: TDataSet);
+begin
+    Novobutton.Enabled:= true;
+    ExcluirButton.Enabled:= true;
+end;
+
+procedure TCadastroDeClientesForm.ClientesQueryAfterEdit(DataSet: TDataSet);
+begin
+  ExcluirButton.enabled:= false;
+  NovoButton.Enabled:= false;
+  cadastrarbutton.Enabled:= true;
+  CancelarButton.enabled:= true;
+end;
+
+procedure TCadastroDeClientesForm.ClientesQueryAfterPost(DataSet: TDataSet);
+begin
+  NovoButton.Enabled:= True;
+  ExcluirButton.Enabled:= True;
+  CancelarButton.Enabled:= False;
+
+end;
+
+procedure TCadastroDeClientesForm.ClientesQueryBeforePost(DataSet: TDataSet);
+begin
+  cadastrarbutton.Enabled:= false;
+end;
+
+procedure TCadastroDeClientesForm.ExcluirButtonClick(Sender: TObject);
+begin
+  if not (ClientesQuery.state in [DSEdit,DSInsert]) then
+    ClientesQuery.Delete;
+    DataModuleForm.Conexao.Commit;
+    ClientesQuery.Refresh;
+end;
+
+procedure TCadastroDeClientesForm.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  ClientesQuery.close;
+  CidadesQuery.close;
+end;
+
+
+
+procedure TCadastroDeClientesForm.FormCreate(Sender: TObject);
+begin
+  ClientesQuery.Open;
+  CidadesQuery.Open;
+end;
+
+end.

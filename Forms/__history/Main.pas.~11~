@@ -1,0 +1,100 @@
+unit Main;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, ConfiguracoesDoBanco,
+  CadastroDeClientes, Vcl.Buttons, Vcl.ExtCtrls, CadastroDeCidades;
+
+type
+  TMainForm = class(TForm)
+    MainMenu: TMainMenu;
+    Menu1: TMenuItem;
+    Menu2: TMenuItem;
+    Sair1: TMenuItem;
+    CadastrarClientes1: TMenuItem;
+    CadastrodeCidades1: TMenuItem;
+    Panel1: TPanel;
+    SpeedButton1: TSpeedButton;
+    SpeedButton2: TSpeedButton;
+    SpeedButton3: TSpeedButton;
+    SpeedButton4: TSpeedButton;
+    procedure Sair1Click(Sender: TObject);
+    procedure Menu2Click(Sender: TObject);
+    procedure CadastrarClientes1Click(Sender: TObject);
+    procedure CadastrodeCidades1Click(Sender: TObject);
+    procedure SpeedButton1Click(Sender: TObject);
+  private
+    { Private declarations }
+    procedure AbreMenu;
+  public
+    { Public declarations }
+  end;
+
+var
+  MainForm: TMainForm;
+  ExpandeMenu: Boolean = False;
+
+implementation
+
+{$R *.dfm}
+
+procedure TMainForm.CadastrarClientes1Click(Sender: TObject);
+begin
+
+  with TCadastroDeClientesForm.create(self) do
+    try
+      ShowModal;
+    finally
+      free;
+    end;
+end;
+
+procedure TMainForm.CadastrodeCidades1Click(Sender: TObject);
+begin
+  with TCadastroDeCidadesForm.create(self) do
+  try
+    ShowModal;
+  finally
+    free;
+  end;
+end;
+
+procedure TMainForm.AbreMenu;
+begin
+  if ExpandeMenu = false then
+   begin
+    Panel1.Width:= 281;
+    ExpandeMenu:= not Expandemenu;
+   end
+   else
+   begin
+    Panel1.Width:= 49;
+    ExpandeMenu:= not Expandemenu;
+   end;
+end;
+
+procedure TMainForm.Menu2Click(Sender: TObject);
+begin
+  with TConfiguracoesDoBancoForm.create(self) do
+    try
+      ShowModal;
+    finally
+      free;
+    end;
+end;
+
+procedure TMainForm.Sair1Click(Sender: TObject);
+begin
+  close;
+end;
+
+
+
+procedure TMainForm.SpeedButton1Click(Sender: TObject);
+begin
+  AbreMenu;
+end;
+
+end.
